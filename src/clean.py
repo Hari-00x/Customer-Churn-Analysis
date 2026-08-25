@@ -26,7 +26,7 @@ df_subscription["cancellation_date"]=pd.to_datetime(df_subscription["cancellatio
 df_subscription["subscription_type"] = df_subscription["subscription_type"].replace(
     "Refferal",
     "Referral"
-)
+) 
 
 
 df_support=pd.read_sql_query(
