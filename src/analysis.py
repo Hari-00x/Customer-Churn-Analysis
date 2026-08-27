@@ -82,7 +82,24 @@ def calculate_kpis():
         how="left"
     )
 
-    # 13. Churn rate by escalation status
+    # Create one support record per customer
+    customer_escalation = (
+        df_support
+        .groupby("customerid")["escalations"]
+        .apply(lambda x: "Y" if (x == "Y").any() else "N")
+        .reset_index()
+    )
+
+    # Merge customer-level escalation status with churn
+    df_support_churn = customer_escalation.merge(
+        df_subscription[
+            ["customerid", "churn_flag"]
+        ],
+        on="customerid",
+        how="left"
+    )
+
+    # Churn rate by escalation status
     churn_by_escalation = (
         df_support_churn
         .groupby("escalations")["churn_flag"]
